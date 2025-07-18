@@ -14,11 +14,15 @@ k3d cluster start k3s-default
 
 ## Import to cluster
 
-k3d image import the_project:local
+k3d image import the_project:local -c k3s-default
 
-## Deployment
+# Apply deployment
 
-kubectl create deployment the-project --image=the_project:local
+kubectl apply -f manifests/deployment.yaml
+
+# Delete deployment
+
+kubectl delete -f manifests/deployment.yaml
 
 ## Check pods
 

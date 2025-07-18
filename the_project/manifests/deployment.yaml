@@ -14,9 +14,4 @@ spec:
     spec:
       containers:
         - name: theproject
-          image: the-project:local
-          env:
-            - name: PORT
-              value: "8080"
-          ports:
-            - containerPort: 8080
+          image: the_project:local
