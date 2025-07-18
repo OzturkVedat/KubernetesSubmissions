@@ -8,21 +8,21 @@ docker build -t log_output:local .
 
 k3d cluster create k3s-default --api-port 127.0.0.1:6445
 
-## Start cluster
+## Delete cluster
 
-k3d cluster start k3s-default
+k3d cluster delete k3s-default
 
 ## Import to cluster
 
-k3d image import log_output:local
+k3d image import log_output:local -c k3s-default
 
-## Deployment
+# Apply deployment
 
-kubectl create deployment log-output --image=log_output:local
+kubectl apply -f manifests/deployment.yaml
 
-## Re-deployment
+# Delete deployment
 
-kubectl rollout restart deployment log-output
+kubectl delete -f manifests/deployment.yaml
 
 ## Check pods
 
