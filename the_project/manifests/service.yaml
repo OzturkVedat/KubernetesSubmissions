@@ -10,5 +10,5 @@ spec:
     - name: http
       nodePort: 30080 # This is the port that is available outside. Value for nodePort can be between 30000-32767
       protocol: TCP
-      port: 1234 # cluster-internal port, it can be ~ anything
+      port: 1234 # cluster-internal port, it can be ~ anything (used for internal comm)
       targetPort: 3000 # This is the target port (inside the pod)
