@@ -6,12 +6,17 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: theproject
+      app: the-project
   template:
     metadata:
       labels:
-        app: theproject
+        app: the-project
     spec:
       containers:
-        - name: theproject
+        - name: the-project
           image: the_project:local
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
