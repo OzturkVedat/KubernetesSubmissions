@@ -1,4 +1,4 @@
-# Log output app
+# Ping-pong app
 
 ## Build
 
