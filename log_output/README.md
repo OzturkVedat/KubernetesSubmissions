@@ -1,4 +1,4 @@
-# Log output app
+# Log output app (splitted)
 
 ## Build
 
@@ -20,9 +20,9 @@ k3d image import log_output:local -c k3s-default
 
 kubectl apply -f manifests
 
-## Delete deployment
+## Delete manifests
 
-kubectl delete -f manifests/deployment.yaml
+kubectl delete -f manifests
 
 ## Check pods
 

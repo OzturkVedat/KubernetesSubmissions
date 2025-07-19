@@ -12,6 +12,22 @@ spec:
       labels:
         app: log-output
     spec:
+      volumes:
+        - name: shared-logs
+          emptyDir: {}     
       containers:
-        - name: log-output
+        - name: writer
           image: log_output:local
+          command: ["node", "writer.js"]
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /shared
+
+        - name: reader
+          image: log_output:local
+          command: ["node", "reader.js"]
+          ports:
+          - containerPort: 3000  
+          volumeMounts:
+            - name: shared-logs
+              mountPath: /shared
