@@ -28,7 +28,7 @@ kubectl delete -f manifests/deployment.yaml
 
 kubectl get pods
 
-# Data flow
+# Request flow
 
 ```bash
 Browser http://localhost:30080

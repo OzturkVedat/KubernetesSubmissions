@@ -6,12 +6,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: logoutput
+      app: log-output
   template:
     metadata:
       labels:
-        app: logoutput
+        app: log-output
     spec:
       containers:
-        - name: logoutput
+        - name: log-output
           image: log_output:local
