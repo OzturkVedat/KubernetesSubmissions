@@ -16,11 +16,11 @@ k3d cluster delete k3s-default
 
 k3d image import log_output:local -c k3s-default
 
-# Apply deployment
+## Apply deployment
 
 kubectl apply -f manifests/deployment.yaml
 
-# Delete deployment
+## Delete deployment
 
 kubectl delete -f manifests/deployment.yaml
 
