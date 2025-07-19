@@ -6,11 +6,11 @@ docker build -t the_project:local .
 
 ## Create cluster
 
-k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "30080:30080@loadbalancer"
+k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "30080:80@loadbalancer"
 
-## Start cluster
+## Delete cluster
 
-k3d cluster start k3s-default
+k3d cluster delete k3s-default
 
 ## Import to cluster
 
@@ -19,10 +19,6 @@ k3d image import the_project:local -c k3s-default
 ## Deploy the app
 
 kubectl apply -f manifests
-
-## Delete deployment
-
-kubectl delete -f manifests/deployment.yaml
 
 ## Check pods
 
