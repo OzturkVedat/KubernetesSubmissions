@@ -6,7 +6,7 @@ docker build -t the_project:local .
 
 ## Create cluster
 
-k3d cluster create k3s-default --api-port 127.0.0.1:6445
+k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "30080:30080@loadbalancer"
 
 ## Start cluster
 
@@ -16,9 +16,9 @@ k3d cluster start k3s-default
 
 k3d image import the_project:local -c k3s-default
 
-## Apply deployment
+## Deploy the app
 
-kubectl apply -f manifests/deployment.yaml
+kubectl apply -f manifests
 
 ## Delete deployment
 
@@ -28,9 +28,21 @@ kubectl delete -f manifests/deployment.yaml
 
 kubectl get pods
 
-## Port forward (change the pod name)
+# Data flow
 
-kubectl port-forward the-project-6846dc79f9-2dcjl 8080:3000
+```bash
+Browser http://localhost:30080
+   ↓
+Host machine port 30080
+   ↓
+Mapped to k3d load balancer's port 30080 (via `-p`)
+   ↓
+Kubernetes NodePort service (nodePort: 30080)
+   ↓
+Routes to pod on port 3000 (targetPort)
+   ↓
+Node.js app listens on 3000
+```
 
 ## Check logs
 
