@@ -29,15 +29,18 @@ kubectl get pods
 ```bash
 Browser http://localhost:30080
    ↓
-Host machine port 30080
+Host port 30080
    ↓
-Mapped to k3d load balancer's port 30080 (via `-p`)
+Mapped to k3d load balancer port 80
    ↓
-Kubernetes NodePort service (nodePort: 30080)
+Ingress Controller (Traefik running inside k3d)
    ↓
-Routes to pod on port 3000 (targetPort)
+Ingress routes request to Service (type: ClusterIP, port 1234)
    ↓
-Node.js app listens on 3000
+ClusterIP service forwards to Pod port 3000 (targetPort)
+   ↓
+Node.js app listens on port 3000
+
 ```
 
 ## Check logs
