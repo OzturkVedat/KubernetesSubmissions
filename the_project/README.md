@@ -28,7 +28,7 @@ kubectl delete -f manifests/deployment.yaml
 
 kubectl get pods
 
-## Port forward
+## Port forward (change the pod name)
 
 kubectl port-forward the-project-6846dc79f9-2dcjl 8080:3000
 
