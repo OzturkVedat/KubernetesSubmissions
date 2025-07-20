@@ -15,4 +15,17 @@ spec:
       containers:
         - name: the-project
           image: the_project:local
-
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - name: image-cache
+              mountPath: /data
+          env:
+            - name: IMAGE_PATH
+              value: /data/image.jpg
+            - name: TIMESTAMP_PATH
+              value: /data/last_fetched.txt
+      volumes:
+        - name: image-cache
+          persistentVolumeClaim:
+            claimName: the-project-pvc

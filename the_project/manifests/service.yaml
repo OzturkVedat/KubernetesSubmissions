@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: the-project # app that declared in deployment
+    app: the-project
   ports:
     - protocol: TCP
       port: 1234 # cluster-internal port, it can be ~ anything (used for internal comm)

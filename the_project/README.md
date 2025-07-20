@@ -6,7 +6,7 @@ docker build -t the_project:local .
 
 ## Create cluster
 
-k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "30080:80@loadbalancer"
+k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
 
 ## Delete cluster
 
@@ -27,9 +27,9 @@ kubectl get pods
 # Request flow
 
 ```bash
-Browser http://localhost:30080
+Browser http://localhost:8081
    ↓
-Host port 30080
+Host port 8081
    ↓
 Mapped to k3d load balancer port 80
    ↓
@@ -49,4 +49,4 @@ kubectl logs deployment/the-project
 
 ## Browser
 
-![Browser ss](docs/app_ss.png)
+![Browser ss](docs/pic_fetcher.png)
