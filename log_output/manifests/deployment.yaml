@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: log-output
+  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -16,28 +17,14 @@ spec:
         - name: writer
           image: log_output:local
           command: ["node", "writer.js"]
-          volumeMounts:
-            - name: shared-volume
-              mountPath: /shared
-          env:
-            - name: LOG_FILE
-              value: /shared/log.txt
 
         - name: reader
           image: log_output:local
           command: ["node", "reader.js"]
           ports:
             - containerPort: 3000
-          volumeMounts:
-            - name: shared-volume
-              mountPath: /shared
           env:
             - name: PING_PONG_HOST
               value: "ping-pong-svc"
             - name: PING_PONG_PORT
               value: "1235"  
-
-      volumes:
-        - name: shared-volume
-          persistentVolumeClaim:
-            claimName: shared-pvc

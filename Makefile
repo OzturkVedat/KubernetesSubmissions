@@ -4,10 +4,21 @@ CLUSTER_NAME = k3s-default
 
 redeploy:
 	k3d cluster delete $(CLUSTER_NAME) && \
+	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer" && namespaces
+
+deploy:
 	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
 
+delete:
+	k3d cluster delete k3s-default
+
+namespaces:
+	kubectl create namespace project || true
+	kubectl create namespace exercises || true
+
 pods:
-	kubectl get pods
+	kubectl get pods -n project
+	kubectl get pods -n exercises
 
 log_output:
 	docker build -t log_output:local ./log_output && \
