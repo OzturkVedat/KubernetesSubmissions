@@ -53,6 +53,6 @@ Service forwards request to pod on port 3000
 Node.js app returns JSON
 ```
 
-## Browser
+## Shared PV result
 
-![Browser ss](docs/browser_ss.png)
+![PV result ss](docs/pv.png)
