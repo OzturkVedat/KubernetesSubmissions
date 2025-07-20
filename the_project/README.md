@@ -47,6 +47,6 @@ Node.js app listens on port 3000
 
 kubectl logs deployment/the-project
 
-## Browser
+## To-do
 
-![Browser ss](docs/pic_fetcher.png)
+![to-do ss](docs/to_do.png)

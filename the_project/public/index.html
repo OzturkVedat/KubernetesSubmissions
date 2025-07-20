@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Project</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 2rem;
+      }
+      input[type="text"] {
+        width: 300px;
+        padding: 5px;
+      }
+      button {
+        padding: 5px 10px;
+        margin-left: 5px;
+      }
+      ul {
+        list-style: disc;
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to "the project"</h1>
+    <p>This image updates every ~10min:</p>
+    <img src="/image" width="600" />
+
+    <hr />
+
+    <h2>Todo List</h2>
+    <form onsubmit="event.preventDefault(); addTodo();">
+      <input type="text" id="todoInput" maxlength="140" placeholder="Write a todo (max 140 chars)" />
+      <button type="submit">Send</button>
+    </form>
+
+    <ul id="todoList">
+      <li>Finish Kubernetes homework</li>
+      <li>Push Docker image</li>
+      <li>Write deployment YAMLs</li>
+    </ul>
+
+    <script>
+      function addTodo() {
+        const input = document.getElementById("todoInput");
+        const value = input.value.trim();
+        if (value.length === 0) return;
+        if (value.length > 140) {
+          alert("Todo is too long!");
+          return;
+        }
+        const li = document.createElement("li");
+        li.textContent = value;
+        document.getElementById("todoList").appendChild(li);
+        input.value = "";
+      }
+    </script>
+  </body>
+</html>
