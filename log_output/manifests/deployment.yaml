@@ -12,22 +12,30 @@ spec:
       labels:
         app: log-output
     spec:
-      volumes:
-        - name: shared-logs
-          emptyDir: {}     
       containers:
         - name: writer
           image: log_output:local
           command: ["node", "writer.js"]
           volumeMounts:
-            - name: shared-logs
+            - name: shared-volume
               mountPath: /shared
+          env:
+            - name: LOG_FILE
+              value: /shared/log.txt
 
         - name: reader
           image: log_output:local
           command: ["node", "reader.js"]
           ports:
-          - containerPort: 3000  
+            - containerPort: 3000
           volumeMounts:
-            - name: shared-logs
+            - name: shared-volume
               mountPath: /shared
+          env:
+            - name: LOG_FILE
+              value: /shared/log.txt
+
+      volumes:
+        - name: shared-volume
+          persistentVolumeClaim:
+            claimName: shared-pvc
