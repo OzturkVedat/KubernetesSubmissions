@@ -1,32 +1,39 @@
-const fs = require("fs");
 const http = require("http");
-const LOG_FILE = process.env.LOG_FILE || "/shared/log.txt";
+
 const PORT = process.env.PORT || 3000;
+const PING_PONG_HOST = process.env.PING_PONG_HOST || "ping-pong-svc";
+const PING_PONG_PORT = process.env.PING_PONG_PORT || "1235";
 
 const server = http.createServer((req, res) => {
   if (req.url === "/status") {
-    let output = "";
-    try {
-      if (fs.existsSync(LOG_FILE)) {
-        const lines = fs.readFileSync(LOG_FILE, "utf8").trim().split("\n");
+    const options = {
+      hostname: PING_PONG_HOST,
+      port: PING_PONG_PORT,
+      path: "/ping",
+      method: "GET",
+    };
 
-        const writerLine =
-          lines.reverse().find(
-            (line) => line.includes(":") && line.includes("-") // crude UUID check
-          ) || "[N/A]: [no writer found]";
+    const request = http.request(options, (pongRes) => {
+      let data = "";
+      pongRes.on("data", (chunk) => (data += chunk));
+      pongRes.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          res.end(`Ping / Pongs: ${json.count}`);
+        } catch (err) {
+          res.writeHead(500);
+          res.end("Invalid response from pingpong app");
+        }
+      });
+    });
 
-        const pingCount = lines.filter((line) => line.includes("Ping request number")).length;
+    request.on("error", (err) => {
+      res.writeHead(500);
+      res.end("Failed to reach pingpong app");
+    });
 
-        output = `${writerLine}\nPing / Pongs: ${pingCount}`;
-      } else {
-        output = "Log file has not been created yet.";
-      }
-    } catch (err) {
-      output = "Error reading log file.";
-    }
-
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end(output);
+    request.end();
   } else {
     res.writeHead(404);
     res.end("Not found");

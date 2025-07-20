@@ -32,8 +32,10 @@ spec:
             - name: shared-volume
               mountPath: /shared
           env:
-            - name: LOG_FILE
-              value: /shared/log.txt
+            - name: PING_PONG_HOST
+              value: "ping-pong-svc"
+            - name: PING_PONG_PORT
+              value: "1235"  
 
       volumes:
         - name: shared-volume
