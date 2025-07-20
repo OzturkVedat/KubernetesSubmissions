@@ -35,26 +35,40 @@
       <button type="submit">Send</button>
     </form>
 
-    <ul id="todoList">
-      <li>Finish Kubernetes homework</li>
-      <li>Push Docker image</li>
-      <li>Write deployment YAMLs</li>
-    </ul>
+    <ul id="todoList"></ul>
 
     <script>
-      function addTodo() {
-        const input = document.getElementById("todoInput");
-        const value = input.value.trim();
-        if (value.length === 0) return;
-        if (value.length > 140) {
-          alert("Todo is too long!");
-          return;
-        }
-        const li = document.createElement("li");
-        li.textContent = value;
-        document.getElementById("todoList").appendChild(li);
-        input.value = "";
+      const listEl = document.getElementById("todoList");
+      const input = document.getElementById("todoInput");
+
+      const API_BASE = "/api";
+
+      async function loadTodos() {
+        const res = await fetch(`${API_BASE}/todos`);
+        const todos = await res.json();
+        listEl.innerHTML = "";
+        todos.forEach((todo) => {
+          const li = document.createElement("li");
+          li.textContent = todo;
+          listEl.appendChild(li);
+        });
       }
+
+      async function addTodo() {
+        const value = input.value.trim();
+        if (!value || value.length > 140) return alert("Invalid input");
+
+        await fetch(`${API_BASE}/todos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: value }),
+        });
+
+        input.value = "";
+        loadTodos();
+      }
+
+      loadTodos();
     </script>
   </body>
 </html>
