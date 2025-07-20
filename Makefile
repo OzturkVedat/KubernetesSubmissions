@@ -4,7 +4,7 @@ CLUSTER_NAME = k3s-default
 
 redeploy:
 	k3d cluster delete $(CLUSTER_NAME) && \
-	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer" && namespaces
+	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
 
 deploy:
 	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
