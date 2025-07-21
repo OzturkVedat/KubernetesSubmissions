@@ -44,28 +44,36 @@
       const API_BASE = "/api";
 
       async function loadTodos() {
-        const res = await fetch(`${API_BASE}/todos`);
-        const todos = await res.json();
-        listEl.innerHTML = "";
-        todos.forEach((todo) => {
-          const li = document.createElement("li");
-          li.textContent = todo;
-          listEl.appendChild(li);
-        });
+        try {
+          const res = await fetch(`${API_BASE}/todos`);
+          const todos = await res.json();
+          listEl.innerHTML = "";
+          todos.forEach((todo) => {
+            const li = document.createElement("li");
+            li.textContent = todo.text;
+            listEl.appendChild(li);
+          });
+        } catch (err) {
+          listEl.innerHTML = "<li>Could not load to-dos</li>";
+        }
       }
 
       async function addTodo() {
-        const value = input.value.trim();
-        if (!value || value.length > 140) return alert("Invalid input");
+        try {
+          const value = input.value.trim();
+          if (!value || value.length > 140) return alert("Invalid input");
 
-        await fetch(`${API_BASE}/todos`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: value }),
-        });
+          await fetch(`${API_BASE}/todos`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: value }),
+          });
 
-        input.value = "";
-        loadTodos();
+          input.value = "";
+          loadTodos();
+        } catch (err) {
+          listEl.innerHTML = "<li>Could not add the to-do</li>";
+        }
       }
 
       loadTodos();

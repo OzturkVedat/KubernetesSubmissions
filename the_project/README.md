@@ -45,7 +45,7 @@ Node.js app listens on port 3000
 
 ## Check logs
 
-kubectl logs deployment/the-project
+kubectl logs deployment/the-project -n project
 
 ## To-do
 

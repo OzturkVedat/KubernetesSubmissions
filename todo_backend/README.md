@@ -26,7 +26,7 @@ kubectl get pods
 
 ## Check logs
 
-kubectl logs deployment/todo-backend
+kubectl logs deployment/todo-backend -n project
 
 ## To-do
 
