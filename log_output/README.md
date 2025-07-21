@@ -30,7 +30,7 @@ kubectl get pods
 
 ## Check logs
 
-kubectl logs deployment/log-output
+kubectl logs deployment/log-output -n exercises
 
 ## Request flow
 

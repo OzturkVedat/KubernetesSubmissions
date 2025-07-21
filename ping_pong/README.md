@@ -30,7 +30,7 @@ kubectl get pods
 
 ## Check logs
 
-kubectl logs deployment/ping-pong
+kubectl logs deployment/ping-pong -n exercises
 
 ## Browser
 

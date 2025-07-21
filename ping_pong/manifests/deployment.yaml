@@ -16,3 +16,14 @@ spec:
       containers:
         - name: ping-pong
           image: ping_pong:local 
+          env:
+            - name: PGHOST
+              value: postgres
+            - name: PGPORT
+              value: "5432"
+            - name: PGUSER
+              value: user
+            - name: PGPASSWORD
+              value: password
+            - name: PGDATABASE
+              value: pingpongdb
