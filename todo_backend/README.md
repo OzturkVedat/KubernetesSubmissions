@@ -30,4 +30,4 @@ kubectl logs deployment/todo-backend -n project
 
 ## To-do
 
-![to-do ss](docs/to_do_browser.png)
+![to-do ss](docs/to_do_browser2.png)
