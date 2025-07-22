@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: the-project
   namespace: project
+  labels:
+    app: the-project
 spec:
   replicas: 1
   selector:

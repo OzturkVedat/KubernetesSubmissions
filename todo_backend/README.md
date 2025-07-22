@@ -28,6 +28,19 @@ kubectl get pods
 
 kubectl logs deployment/todo-backend -n project
 
-## To-do
+# Helm
 
-![to-do ss](docs/to_do_browser2.png)
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+# Install Loki stack
+
+helm upgrade --install loki grafana/loki-stack \
+ --namespace logging --create-namespace \
+ --set grafana.enabled=true \
+ --set promtail.enabled=true \
+ --set loki.enabled=true
+
+## Loki UI
+
+![loki ss](docs/loki.png)

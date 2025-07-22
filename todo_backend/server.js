@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const { Pool } = require("pg");
+const morgan = require("morgan");
 
 const app = express();
+app.use(morgan("dev"));
 const PORT = 3000;
 
 const pool = new Pool({
@@ -67,7 +69,8 @@ function startServer() {
   app.post("/api/todos", async (req, res) => {
     const { text } = req.body;
     if (!text || text.length > 140) {
-      return res.status(400).json({ error: "Invalid todo text" });
+      console.warn(`[REJECTED] Todo too long (${text.length} chars): "${text}"`);
+      return res.status(400).json({ error: "Todo must be 140 characters or less" });
     }
 
     try {

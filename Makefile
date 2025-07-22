@@ -7,6 +7,7 @@ redeploy:
 	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
 	kubectl create namespace project || true
 	kubectl create namespace exercises || true
+	kubectl create namespace logging || true
 	
 deploy:
 	k3d cluster create $(CLUSTER_NAME) --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
@@ -17,6 +18,7 @@ delete:
 pods:
 	kubectl get pods -n project
 	kubectl get pods -n exercises
+	kubectl get pods -n logging
 
 log_output:
 	docker build -t log_output:local ./log_output && \
@@ -37,3 +39,16 @@ todo_backend:
 	docker build -t todo_backend:local ./todo_backend && \
 	k3d image import todo_backend:local -c $(CLUSTER_NAME) && \
 	kubectl apply -f todo_backend/manifests
+
+logging:
+	helm upgrade --install loki grafana/loki-stack \
+		--namespace logging --create-namespace \
+		--set grafana.enabled=true \
+		--set promtail.enabled=true \
+		--set loki.enabled=true
+
+grafana:
+	kubectl port-forward svc/loki-grafana -n logging 3000:80		
+
+grafana-pw:
+	kubectl get secret -n logging loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
