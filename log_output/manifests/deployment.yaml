@@ -27,12 +27,12 @@ spec:
             - name: PING_PONG_HOST
               value: "ping-pong-svc"
             - name: PING_PONG_PORT
-              value: "1235"  
+              value: "1235"
             - name: MESSAGE
               valueFrom:
                 configMapKeyRef:
                   name: log-output-config
-                  key: MESSAGE  
+                  key: MESSAGE
           volumeMounts:
             - name: config-volume
               mountPath: /app/config
@@ -43,4 +43,4 @@ spec:
             name: log-output-config
             items:
               - key: information.txt
-                path: information.txt          
+                path: information.txt

@@ -2,36 +2,24 @@
 
 ## Build
 
-docker build -t ping_pong:local .
+docker build -t ping_pong:gcr .
 
-## Create cluster
+# Set the project
 
-k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
+gcloud config set project k8s-course-466712
 
-## Delete cluster
+## Tag local image
 
-k3d cluster delete k3s-default
+docker tag ping_pong:gcr gcr.io/k8s-course-466712/ping_pong:gcr
 
-## Import to cluster
+## Push to GCR
 
-k3d image import ping_pong:local -c k3s-default
+docker push gcr.io/k8s-course-466712/ping_pong:gcr
 
-## Deploy manifests
+# Apply manifests
 
-kubectl apply -f manifests
-
-## Delete manifests
-
-kubectl delete -f manifests
-
-## Check pods
-
-kubectl get pods
-
-## Check logs
-
-kubectl logs deployment/ping-pong -n exercises
+kubectl apply -f ping_pong-deployment.yaml
 
 ## Browser
 
-![Browser ss](docs/browser_ss.png)
+![Browser ss](docs/deployed.png)

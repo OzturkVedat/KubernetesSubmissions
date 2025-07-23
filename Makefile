@@ -52,3 +52,13 @@ grafana:
 
 grafana-pw:
 	kubectl get secret -n logging loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+
+cc:
+	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1
+
+dc:
+	gcloud container clusters delete course-cluster --zone europe-central2-a
+
+context:
+	gcloud config set project k8s-course-466712
+	gcloud container clusters get-credentials course-cluster --zone europe-central2-a --project k8s-course-466712
