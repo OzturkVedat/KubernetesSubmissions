@@ -4,7 +4,7 @@ const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 const PING_PONG_HOST = process.env.PING_PONG_HOST || "ping-pong-svc";
-const PING_PONG_PORT = process.env.PING_PONG_PORT || "1235";
+const PING_PONG_PORT = process.env.PING_PONG_PORT || "80";
 
 const FILE_PATH = path.join(__dirname, "config", "information.txt");
 const MESSAGE = process.env.MESSAGE || "no message found";
@@ -59,6 +59,9 @@ const server = http.createServer((req, res) => {
     });
 
     request.end();
+  } else if (req.url === "/" && req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("log-output root alive");
   } else {
     res.writeHead(404);
     res.end("Not found");

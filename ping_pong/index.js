@@ -75,6 +75,9 @@ function startServer() {
         res.writeHead(500);
         res.end("Internal Server Error");
       }
+    } else if (req.url === "/" && req.method === "GET") {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("Ping-pong app root is alive");
     } else {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("404 Not Found");

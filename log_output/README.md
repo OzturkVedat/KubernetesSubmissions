@@ -32,27 +32,6 @@ kubectl get pods
 
 kubectl logs deployment/log-output -n exercises
 
-## Request flow
+## Deployed status page
 
-```bash
-http://localhost:8081/status
-
-Host machine (browser)
-localhost:8081
-   ↓
-Docker forwards host port 8081 to k3d loadbalancer port 80
-   ↓
-Ingress controller (Traefik) listens on port 80 inside the cluster
-   ↓
-Ingress rule matches path /status
-   ↓
-Ingress forwards to ClusterIP service 'log-output-svc' on port 2345
-   ↓
-Service forwards request to pod on port 3000
-   ↓
-Node.js app returns JSON
-```
-
-## Updated status page
-
-![Updated ss](docs/env_var_browser.png)
+![Deployed ss](docs/gke_browser.png)

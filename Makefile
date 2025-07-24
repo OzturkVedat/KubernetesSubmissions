@@ -54,11 +54,19 @@ grafana-pw:
 	kubectl get secret -n logging loki-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
 
 cc:
-	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1
+	@echo "Creating GKE cluster.."
+	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1 && \
+	$(MAKE) context	&& \
+	$(MAKE) lb
 
 dc:
-	gcloud container clusters delete course-cluster --zone europe-central2-a
+	gcloud container clusters delete course-cluster --zone europe-central2-a -q
 
 context:
 	gcloud config set project k8s-course-466712
 	gcloud container clusters get-credentials course-cluster --zone europe-central2-a --project k8s-course-466712
+
+lb:
+	gcloud container clusters update course-cluster \
+  	--zone europe-central2-a \
+  	--update-addons=HttpLoadBalancing=ENABLED

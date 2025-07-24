@@ -1,5 +1,5 @@
 PROJECT_ID=k8s-course-466712
-IMAGE_NAME=ping_pong
+IMAGE_NAME=log_output
 IMAGE_TAG=gcr
 FULL_IMAGE=gcr.io/$(PROJECT_ID)/$(IMAGE_NAME):$(IMAGE_TAG)
 CLUSTER_NAME=course-cluster
@@ -27,16 +27,13 @@ delete:
 deploy: all	
 
 logs:
-	kubectl logs deployment/ping-pong -n exercises
+	kubectl logs deployment/log-output -n exercises
 
 svc:
 	kubectl get svc -n exercises	
 
 ingress:
-	kubectl get ingress -n exercises
+	kubectl get ingress -n exercises	
 
 log-ingress:
 	kubectl describe ingress log-output-ingress -n exercises
-
-images:
-	gcloud container images list --project k8s-course-466712
