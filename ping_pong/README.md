@@ -22,4 +22,4 @@ kubectl apply -f ping_pong-deployment.yaml
 
 ## Browser
 
-![Browser ss](docs/deployed.png)
+![Browser ss](docs/route_changed.png)
