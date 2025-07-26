@@ -37,3 +37,11 @@ ingress:
 
 log-ingress:
 	kubectl describe ingress log-output-ingress -n exercises
+
+gateway:
+	kubectl get gateway -n exercises
+
+routes:
+	kubectl get httproute -n exercises
+	kubectl describe httproute log-output-route -n exercises
+	kubectl describe gateway log-output-gateway -n exercises	

@@ -57,7 +57,7 @@ cc:
 	@echo "Creating GKE cluster.."
 	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1 && \
 	$(MAKE) context	&& \
-	$(MAKE) lb
+	$(MAKE) gw
 
 dc:
 	gcloud container clusters delete course-cluster --zone europe-central2-a -q
@@ -70,3 +70,8 @@ lb:
 	gcloud container clusters update course-cluster \
   	--zone europe-central2-a \
   	--update-addons=HttpLoadBalancing=ENABLED
+
+gw:
+	gcloud container clusters update course-cluster \
+  	--zone=europe-central2-a \
+  	--gateway-api=standard

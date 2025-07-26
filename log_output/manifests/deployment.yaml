@@ -58,31 +58,45 @@ spec:
                 path: information.txt
 
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
 metadata:
-  name: log-output-ingress
+  name: log-output-gateway
   namespace: exercises
-  annotations:
-    kubernetes.io/ingress.class: "gce"
 spec:
+  gatewayClassName: gke-l7-global-external-managed
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        kinds:
+          - kind: HTTPRoute
+
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: log-output-route
+  namespace: exercises
+spec:
+  parentRefs:
+    - name: log-output-gateway
   rules:
-    - http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: log-output-svc
-                port:
-                  number: 80
-          - path: /pingpong
-            pathType: Prefix
-            backend:
-              service:
-                name: ping-pong-svc
-                port:
-                  number: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: log-output-svc
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /pingpong
+      backendRefs:
+        - name: ping-pong-svc
+          port: 80
 
 ---
 apiVersion: v1
@@ -91,7 +105,7 @@ metadata:
   name: log-output-svc
   namespace: exercises
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: log-output
   ports:
