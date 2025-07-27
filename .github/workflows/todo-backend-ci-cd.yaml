@@ -20,6 +20,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set Branch and Namespace Environment Vars
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "NAMESPACE=project" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          fi
+
       - name: Auth to GCloud
         uses: google-github-actions/auth@v2
         with:
@@ -51,8 +60,12 @@ jobs:
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
 
+      - name: Create namespace
+        run: |
+          kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+
       - name: Patch image in Kustomize and deploy
         run: |
           cd todo_backend/manifests
           kustomize edit set image todo_backend=${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
-          kubectl apply -k .
+          kubectl apply -k . --namespace=$NAMESPACE

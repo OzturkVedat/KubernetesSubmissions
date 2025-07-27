@@ -20,6 +20,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set Branch and Namespace Environment Vars
+        run: |
+          echo "BRANCH_NAME=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          if [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "NAMESPACE=project" >> $GITHUB_ENV
+          else
+            echo "NAMESPACE=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          fi
+
       - name: Auth to GCloud
         uses: google-github-actions/auth@v2
         with:
@@ -51,17 +60,21 @@ jobs:
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
 
+      - name: Create namespace
+        run: |
+          kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
+
       - name: Patch image in Kustomize and deploy
         run: |
           cd the_project/manifests
           kustomize edit set image the_project=${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
-          kubectl apply -k .
+          kubectl apply -k . --namespace=$NAMESPACE
 
       - name: Show Ingress External IP
         run: |
           echo "Waiting for Ingress IP..."
           for i in {1..20}; do
-            IP=$(kubectl get ingress the-project-ingress -n project -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+            IP=$(kubectl get ingress the-project-ingress -n $NAMESPACE -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
             if [[ -n "$IP" ]]; then
               echo "App is available at: http://$IP"
               exit 0
