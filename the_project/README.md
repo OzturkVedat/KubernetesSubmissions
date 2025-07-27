@@ -1,52 +1,37 @@
-# The Project
+# DBaaS vs DIY Postgres on GKE
 
-## Build
+Here's the pros and cons of each approach based on key differences like setup, cost, backups, etc:
 
-docker build -t the_project:local .
+## Google Cloud SQL (DBaaS)
 
-## Create cluster
+Pros:
 
-k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
+- Very easy to initialize.
+- Backups, updates, failover, and replication are handled for you.
+- Built-in backup system with daily automated backups and point-in-time recovery.
+- Built in monitoring, logging, and IAM integration.
+- Great for prod where reliability matters.
 
-## Delete cluster
+Cons:
 
-k3d cluster delete k3s-default
+- Higher ongoing cost.
+- Less control over Postgres internals (extensions, etc).
+- Vendor lock-in, your DB is tied to GCLoud infrastructure.
 
-## Import to cluster
+## DIY Postgres on GKE with PV
 
-k3d image import the_project:local -c k3s-default
+Pros:
 
-## Deploy the app
+- Full control over how Postgres is configured and deployed.
+- Lower cost for smaller or non-critical workloads (e.g. dev/test)
+- More portable, you're not tied to one cloud provider.
 
-kubectl apply -f manifests
+Cons:
 
-## Check pods
+- Setup takes more time (StatefulSets, networking, etc).
+- Backups need to be implemented manually.
+- You're responsible for everything- updates, scaling, maintenance, etc.
 
-kubectl get pods
+## Summary
 
-# Request flow
-
-```bash
-Browser http://localhost:8081
-   ↓
-Host port 8081
-   ↓
-Mapped to k3d load balancer port 80
-   ↓
-Ingress Controller (Traefik running inside k3d)
-   ↓
-Ingress routes request to Service (type: ClusterIP, port 1234)
-   ↓
-ClusterIP service forwards to Pod port 3000 (targetPort)
-   ↓
-Node.js app listens on port 3000
-
-```
-
-## Check logs
-
-kubectl logs deployment/the-project -n project
-
-## To-do
-
-![to-do ss](docs/to_do.png)
+Cloud SQL is great for teams who want to offload database operations and are okay with paying more for convenience. Running Postgres yourself on GKE gives you full control and potentially lower costs, though it comes with more responsibility.
