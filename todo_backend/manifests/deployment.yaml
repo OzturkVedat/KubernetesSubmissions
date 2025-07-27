@@ -17,26 +17,44 @@ spec:
     spec:
       containers:
         - name: todo-backend
-          image: todo_backend:local
+          image: todo_backend
           ports:
             - containerPort: 3000
           env:
-          - name: PGHOST
-            value: "postgres"
-          - name: PGPORT
-            value: "5432"
-          - name: PGDATABASE
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: POSTGRES_DB
-          - name: PGUSER
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: POSTGRES_USER
-          - name: PGPASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-secret
-                key: POSTGRES_PASSWORD
+            - name: PGHOST
+              value: "postgres"
+            - name: PGPORT
+              value: "5432"
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_DB
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_USER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: POSTGRES_PASSWORD
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: random-wiki-todo
+  namespace: project
+spec:
+  schedule: "0 * * * *" # every hour
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: wiki-todo
+              image: todo_backend:local
+              command: ["node", "random-todo.js"]
+          restartPolicy: OnFailure

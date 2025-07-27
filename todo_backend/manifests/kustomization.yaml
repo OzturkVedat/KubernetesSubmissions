@@ -4,8 +4,9 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - service.yaml
+  - postgres.yaml
 
 images:
-  - name: the_project
-    newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/the_project
+  - name: todo_backend
+    newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/todo_backend
     newTag: ar

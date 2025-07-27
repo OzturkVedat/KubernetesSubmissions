@@ -1,19 +1,19 @@
-name: Deploy the-project to GKE
+name: Deploy todo-backend to GKE
 
 on:
   push:
     branches: [main]
     paths:
-      - "the_project/**"
+      - "todo_backend/**"
   workflow_dispatch: {}
 
 env:
   PROJECT_ID: k8s-course-466712
-  IMAGE_NAME: the_project
+  IMAGE_NAME: todo_backend
   IMAGE_TAG: ar
   CLUSTER_NAME: course-cluster
   CLUSTER_ZONE: europe-central2-a
-  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/the_project
+  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/todo_backend
 
 jobs:
   deploy:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ./the_project
+          docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ./todo_backend
 
       - name: Tag image with AR path
         run: |
@@ -57,21 +57,6 @@ jobs:
 
       - name: Patch image in Kustomize and deploy
         run: |
-          cd the_project/manifests
-          kustomize edit set image the_project=${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+          cd todo_backend/manifests
+          kustomize edit set image todo_backend=${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
           kubectl apply -k .
-
-      - name: Show Ingress External IP
-        run: |
-          echo "Waiting for Ingress IP..."
-          for i in {1..20}; do
-            IP=$(kubectl get ingress the-project-ingress -n project -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-            if [[ -n "$IP" ]]; then
-              echo "App is available at: http://$IP"
-              exit 0
-            fi
-            echo "Still waiting for Ingress IP... (try #$i)"
-            sleep 10
-          done
-          echo "Ingress IP not available after waiting."
-          exit 1
