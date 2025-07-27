@@ -39,5 +39,5 @@ jobs:
 
       - name: Deploy todo-backend
         run: |
-          cd ../../todo_backend/manifests
+          cd todo_backend/manifests
           kubectl apply -k .
