@@ -1,21 +1,5 @@
 # The Project
 
-## Build
-
-docker build -t todo_backend:local .
-
-## Create cluster
-
-k3d cluster create k3s-default --api-port 127.0.0.1:6445 -p "8081:80@loadbalancer"
-
-## Delete cluster
-
-k3d cluster delete k3s-default
-
-## Import to cluster
-
-k3d image import todo_backend:local -c k3s-default
-
 ## Deploy the app
 
 kubectl apply -f manifests
@@ -32,6 +16,10 @@ kubectl logs deployment/todo-backend -n project
 
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
+
+# GCS key for GKE
+
+kubectl create secret generic gcs-key --from-file=key.json=./k8s-course.key.json --namespace=project
 
 # Install Loki stack
 
