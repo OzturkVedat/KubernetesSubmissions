@@ -32,12 +32,12 @@ jobs:
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v2.1.0
 
-      - name: Deploy the-project
-        run: |
-          cd the_project/manifests
-          kubectl apply -k .
-
       - name: Deploy todo-backend
         run: |
           cd todo_backend/manifests
+          kubectl apply -k .
+
+      - name: Deploy the-project
+        run: |
+          cd the_project/manifests
           kubectl apply -k .
