@@ -13,7 +13,7 @@ env:
   IMAGE_TAG: gcr
   CLUSTER_NAME: course-cluster
   CLUSTER_ZONE: europe-central2-a
-  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo
+  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/${{ env.IMAGE_NAME }}
 
 jobs:
   deploy:
@@ -41,7 +41,7 @@ jobs:
         run: |
           docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
 
-      - name: Push image to AR (overwrite)
+      - name: Push image to AR
         run: |
           docker push ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
 
