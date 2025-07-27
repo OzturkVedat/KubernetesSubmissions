@@ -1,10 +1,6 @@
 name: Deploy the-project to GKE
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "the_project/**"
   workflow_dispatch: {}
 
 env:

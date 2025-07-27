@@ -1,10 +1,6 @@
 name: Deploy todo-backend to GKE
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "todo_backend/**"
   workflow_dispatch: {}
 
 env:

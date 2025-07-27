@@ -1,0 +1,37 @@
+name: Reset Cluster Namespaces
+
+on:
+  workflow_dispatch:
+
+env:
+  CLUSTER_NAME: course-cluster
+  CLUSTER_ZONE: europe-central2-a
+  PROJECT_ID: k8s-course-466712
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auth to GCloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.CLUSTER_NAME }}
+          location: ${{ env.CLUSTER_ZONE }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Delete namespaces if they exist
+        run: |
+          for ns in project exercises; do
+            if kubectl get namespace $ns &> /dev/null; then
+              echo "Deleting namespace: $ns"
+              kubectl delete namespace $ns
+            else
+              echo "Namespace $ns does not exist"
+            fi
+          done
