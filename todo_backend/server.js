@@ -62,7 +62,7 @@ function startServer() {
     res.status(200).send("OK");
   });
 
-  app.get("/api/todos", async (req, res) => {
+  app.get("/todos", async (req, res) => {
     try {
       const result = await pool.query("SELECT * FROM todos");
       res.json(result.rows);
@@ -72,7 +72,7 @@ function startServer() {
     }
   });
 
-  app.post("/api/todos", async (req, res) => {
+  app.post("/todos", async (req, res) => {
     const { text } = req.body;
     if (!text || text.length > 140) {
       console.warn(`[REJECTED] Todo too long (${text.length} chars): "${text}"`);

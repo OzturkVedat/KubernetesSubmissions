@@ -43,7 +43,7 @@ async function sendTodo(url, retries = MAX_RETRIES) {
           {
             hostname: "todo-backend-svc.project.svc.cluster.local",
             port: 1235,
-            path: "/api/todos",
+            path: "/todos",
             method: "POST",
             headers: {
               "Content-Type": "application/json",
