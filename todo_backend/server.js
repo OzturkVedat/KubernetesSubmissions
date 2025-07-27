@@ -58,11 +58,11 @@ async function init() {
 function startServer() {
   app.use(express.json());
 
-  app.get("/", (req, res) => {
+  app.get("/api/", (req, res) => {
     res.status(200).send("OK");
   });
 
-  app.get("/todos", async (req, res) => {
+  app.get("/api/todos", async (req, res) => {
     try {
       const result = await pool.query("SELECT * FROM todos");
       res.json(result.rows);
@@ -72,7 +72,7 @@ function startServer() {
     }
   });
 
-  app.post("/todos", async (req, res) => {
+  app.post("/api/todos", async (req, res) => {
     const { text } = req.body;
     if (!text || text.length > 140) {
       console.warn(`[REJECTED] Todo too long (${text.length} chars): "${text}"`);
