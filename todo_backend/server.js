@@ -5,6 +5,9 @@ const morgan = require("morgan");
 
 const app = express();
 app.use(morgan("dev"));
+
+// app.use(cors());
+
 const PORT = 3000;
 
 const pool = new Pool({
@@ -53,8 +56,11 @@ async function init() {
 }
 
 function startServer() {
-  app.use(cors());
   app.use(express.json());
+
+  app.get("/", (req, res) => {
+    res.status(200).send("OK");
+  });
 
   app.get("/api/todos", async (req, res) => {
     try {
