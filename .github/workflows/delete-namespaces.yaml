@@ -1,4 +1,4 @@
-name: Reset Cluster Namespaces
+name: Delete Cluster Namespaces
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ env:
   PROJECT_ID: k8s-course-466712
 
 jobs:
-  reset:
+  delete:
     runs-on: ubuntu-latest
 
     steps:
