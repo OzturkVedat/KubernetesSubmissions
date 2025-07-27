@@ -1,0 +1,62 @@
+name: Deploy the-project to GKE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "the_project/**"
+  workflow_dispatch: {}
+
+env:
+  PROJECT_ID: k8s-course-466712
+  IMAGE_NAME: the-project
+  IMAGE_TAG: gcr
+  CLUSTER_NAME: course-cluster
+  CLUSTER_ZONE: europe-central2-a
+  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo
+
+jobs:
+  deploy:
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Auth to GCloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+      - name: Auth Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker europe-central2-docker.pkg.dev
+
+      - name: Build image
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ./the_project
+
+      - name: Tag image with AR path
+        run: |
+          docker tag ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+
+      - name: Push image to AR (overwrite)
+        run: |
+          docker push ${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+
+      - name: Get GKE credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ env.CLUSTER_NAME }}
+          location: ${{ env.CLUSTER_ZONE }}
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v2.1.0
+
+      - name: Patch image in Kustomize and deploy
+        run: |
+          cd the_project/manifests
+          kustomize edit set image the_project=${{ env.IMAGE_REPO }}:${{ env.IMAGE_TAG }}
+          kubectl apply -k .

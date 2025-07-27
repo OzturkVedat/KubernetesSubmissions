@@ -31,6 +31,10 @@ app.get("/image", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.listen(PORT, () => {
   console.log(`Express server running on port ${PORT}`);
 });
