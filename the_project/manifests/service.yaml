@@ -20,13 +20,6 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: the-project-svc
-                port:
-                  number: 1234
           - path: /api
             pathType: Prefix
             backend:
@@ -34,3 +27,10 @@ spec:
                 name: todo-backend-svc
                 port:
                   number: 1235
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: the-project-svc
+                port:
+                  number: 1234
