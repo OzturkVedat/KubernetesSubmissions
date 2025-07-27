@@ -13,7 +13,7 @@ env:
   IMAGE_TAG: gcr
   CLUSTER_NAME: course-cluster
   CLUSTER_ZONE: europe-central2-a
-  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/${{ env.IMAGE_NAME }}
+  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/the-project
 
 jobs:
   deploy:
