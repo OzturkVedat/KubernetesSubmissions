@@ -47,7 +47,7 @@ jobs:
 
       - name: Deploy todo-backend
         run: |
-          cd todo_backend/manifests
+          cd todo_backend/manifestsm
           kubectl apply -k . --namespace=$NAMESPACE
 
       - name: Deploy the-project

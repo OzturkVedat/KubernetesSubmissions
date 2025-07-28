@@ -72,6 +72,15 @@ function startServer() {
     }
   });
 
+  app.get("/api/health", async (req, res) => {
+    try {
+      await pool.query("SELECT 1");
+      res.status(200).send("healthy");
+    } catch {
+      res.status(500).send("unhealthy");
+    }
+  });
+
   app.post("/api/todos", async (req, res) => {
     const { text } = req.body;
     if (!text || text.length > 140) {

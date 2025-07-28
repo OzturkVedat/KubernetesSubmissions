@@ -35,6 +35,10 @@ app.get("/", (req, res) => {
   res.status(200).send("OK");
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).send("healthy");
+});
+
 app.listen(PORT, () => {
   console.log(`Express server running on port ${PORT}`);
 });

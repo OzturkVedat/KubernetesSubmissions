@@ -19,6 +19,13 @@ spec:
           image: todo_backend
           ports:
             - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 5
           env:
             - name: PGHOST
               value: "postgres"
