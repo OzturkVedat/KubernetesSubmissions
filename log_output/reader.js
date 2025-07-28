@@ -62,6 +62,9 @@ const server = http.createServer((req, res) => {
   } else if (req.url === "/" && req.method === "GET") {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("log-output root alive");
+  } else if (req.url === "/healthz" && req.method === "GET") {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("healthy");
   } else {
     res.writeHead(404);
     res.end("Not found");

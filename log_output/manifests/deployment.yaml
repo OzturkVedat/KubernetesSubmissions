@@ -45,10 +45,11 @@ spec:
               readOnly: true
           readinessProbe:
             httpGet:
-              path: /status
+              path: /healthz
               port: 3000
             initialDelaySeconds: 60
-            periodSeconds: 10
+            periodSeconds: 15
+            failureThreshold: 5
       volumes:
         - name: config-volume
           configMap:

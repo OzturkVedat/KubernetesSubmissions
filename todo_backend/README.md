@@ -12,12 +12,12 @@ kubectl get pods
 
 kubectl logs deployment/todo-backend -n project
 
-# Helm
+## Helm
 
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 
-# GCS key for GKE
+## GCS key for GKE
 
 kubectl create secret generic gcs-key --from-file=key.json=./k8s-course.key.json --namespace=project
 

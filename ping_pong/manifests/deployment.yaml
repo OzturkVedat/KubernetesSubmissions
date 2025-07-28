@@ -24,6 +24,13 @@ spec:
           image: gcr.io/k8s-course-466712/ping_pong:gcr
           ports:
             - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /healthz  # if your app provides a real health check path, use it
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            failureThreshold: 5  
           env:
             - name: PGHOST
               value: postgres

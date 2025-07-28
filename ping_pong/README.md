@@ -4,7 +4,7 @@
 
 docker build -t ping_pong:gcr .
 
-# Set the project
+## Set the project
 
 gcloud config set project k8s-course-466712
 
@@ -16,7 +16,7 @@ docker tag ping_pong:gcr gcr.io/k8s-course-466712/ping_pong:gcr
 
 docker push gcr.io/k8s-course-466712/ping_pong:gcr
 
-# Apply manifests
+## Apply manifests
 
 kubectl apply -f ping_pong-deployment.yaml
 
