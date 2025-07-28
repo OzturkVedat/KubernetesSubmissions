@@ -21,14 +21,6 @@ helm repo update
 
 kubectl create secret generic gcs-key --from-file=key.json=./k8s-course.key.json --namespace=project
 
-# Install Loki stack
+## Logs Explorer
 
-helm upgrade --install loki grafana/loki-stack \
- --namespace logging --create-namespace \
- --set grafana.enabled=true \
- --set promtail.enabled=true \
- --set loki.enabled=true
-
-## Loki UI
-
-![loki ss](docs/loki.png)
+![logs ss](docs/todo_logs.png)
