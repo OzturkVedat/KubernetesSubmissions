@@ -78,6 +78,9 @@ function startServer() {
     } else if (req.url === "/" && req.method === "GET") {
       res.writeHead(200, { "Content-Type": "text/plain" });
       res.end("Ping-pong app root is alive");
+    } else if (req.url === "/healthz" && req.method === "GET") {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("healthy");
     } else {
       res.writeHead(404, { "Content-Type": "text/plain" });
       res.end("404 Not Found");
