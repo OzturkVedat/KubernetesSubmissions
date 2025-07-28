@@ -111,12 +111,16 @@ async function init() {
     });
 
     console.log("Registered routes:");
-    app._router.stack
-      .filter((r) => r.route)
-      .forEach((r) => {
-        const methods = Object.keys(r.route.methods).join(",").toUpperCase();
-        console.log(` → ${methods} ${r.route.path}`);
-      });
+    if (app._router && app._router.stack) {
+      app._router.stack
+        .filter((r) => r.route && r.route.path)
+        .forEach((r) => {
+          const methods = Object.keys(r.route.methods).join(",").toUpperCase();
+          console.log(` → ${methods} ${r.route.path}`);
+        });
+    } else {
+      console.warn("No routes registered yet.");
+    }
 
     app.listen(PORT, () => {
       console.log(`Todo API running on port ${PORT}`);
