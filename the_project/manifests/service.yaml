@@ -8,7 +8,7 @@ spec:
     app: the-project
   ports:
     - protocol: TCP
-      port: 1234 # cluster-internal port, it can be ~ anything (used for internal comm)
+      port: 80
       targetPort: 3000 # This is the target port (inside the pod)
 
 ---
@@ -28,11 +28,11 @@ spec:
               service:
                 name: todo-backend-svc
                 port:
-                  number: 1235
+                  number: 80
           - path: /
             pathType: Prefix
             backend:
               service:
                 name: the-project-svc
                 port:
-                  number: 1234
+                  number: 80
