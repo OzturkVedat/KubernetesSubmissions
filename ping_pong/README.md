@@ -23,3 +23,7 @@ kubectl apply -f ping_pong-deployment.yaml
 ## Browser
 
 ![Browser ss](docs/route_changed.png)
+
+## Prometheus UI
+
+![Prometheus ss](docs/prometheus.png)
