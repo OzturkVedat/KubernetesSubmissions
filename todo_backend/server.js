@@ -102,6 +102,9 @@ async function init() {
       res.status(404).send("Not found");
     });
 
+    console.log("Registered routes:");
+    app._router.stack.filter((r) => r.route && r.route.path).forEach((r) => console.log(r.route.path));
+
     app.listen(PORT, () => {
       console.log(`Todo API running on port ${PORT}`);
     });
