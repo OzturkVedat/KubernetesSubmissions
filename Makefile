@@ -61,7 +61,8 @@ cc:
 	@echo "Creating GKE cluster.."
 	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1 && \
 	$(MAKE) context	&& \
-	$(MAKE) gw
+	$(MAKE) gw && \
+	$(MAKE) rollouts
 
 dc:
 	gcloud container clusters delete course-cluster --zone europe-central2-a -q
@@ -79,3 +80,8 @@ gw:
 	gcloud container clusters update course-cluster \
   	--zone=europe-central2-a \
   	--gateway-api=standard
+
+rollouts:
+	@echo "Installing Argo Rollouts CRDs and controller..."
+	kubectl create namespace argo-rollouts --dry-run=client -o yaml | kubectl apply -f -
+	kubectl apply -n argo-rollouts --server-side -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml

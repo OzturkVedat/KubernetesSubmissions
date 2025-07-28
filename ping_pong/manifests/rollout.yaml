@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: pingpong-rollout
+  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -35,14 +36,14 @@ spec:
               value: password
             - name: PGDATABASE
               value: pingpongdb
-    strategy:
-      canary:
-        steps:
-          - setWeight: 50
-          - pause: { duration: 60s }
-          - analysis:
-              templates:
-                - templateName: pingpong-cpu-check
+  strategy:
+    canary:
+      steps:
+        - setWeight: 50
+        - pause: { duration: 60s }
+        - analysis:
+            templates:
+              - templateName: pingpong-cpu-check
 
 ---
 apiVersion: argoproj.io/v1alpha1
