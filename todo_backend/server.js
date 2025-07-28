@@ -62,7 +62,6 @@ async function init() {
       console.log("[/api/health] entered route handler");
       try {
         await pool.query("SELECT 1");
-        console.log("[/api/health] DB check OK");
         res.status(200).send("healthy");
       } catch (err) {
         console.error("[/api/health] DB check failed", err);
@@ -77,53 +76,35 @@ async function init() {
     app.get("/api/todos", async (req, res) => {
       try {
         const result = await pool.query("SELECT * FROM todos");
+        console.log(`Fetched ${result.rows.length} todos`);
         res.json(result.rows);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching todos:", err);
         res.status(500).json({ error: "Database error" });
       }
     });
 
     app.post("/api/todos", async (req, res) => {
       const { text } = req.body;
-      if (!text || text.length > 140) {
-        return res.status(400).json({ error: "Todo must be 140 characters or less" });
-      }
+      if (!text || text.length > 140) return res.status(400).json({ error: "Todo must be 140 characters or less" });
 
       try {
         await pool.query("INSERT INTO todos (text) VALUES ($1)", [text]);
+        console.log(`Added todo: "${text}"`);
         res.status(201).json({ success: true });
       } catch (err) {
-        console.error(err);
+        console.error("Error inserting todo:", err);
         res.status(500).json({ error: "Database error" });
       }
     });
 
-    app.use((req, res, next) => {
-      console.log(`[DEBUG] Unmatched request: ${req.method} ${req.originalUrl} → req.path = ${req.path}`);
-      next();
-    });
-
     // 404 fallback
     app.use((req, res) => {
-      console.log(`→ 404 Not Found: ${req.method} ${req.originalUrl}`);
       res.status(404).send("Not found");
     });
 
-    console.log("Registered routes:");
-    if (app._router && app._router.stack) {
-      app._router.stack
-        .filter((r) => r.route && r.route.path)
-        .forEach((r) => {
-          const methods = Object.keys(r.route.methods).join(",").toUpperCase();
-          console.log(` → ${methods} ${r.route.path}`);
-        });
-    } else {
-      console.warn("No routes registered yet.");
-    }
-
     app.listen(PORT, () => {
-      console.log(`Todo API running on port ${PORT}`);
+      console.log(`Todo-backend running on port ${PORT}`);
     });
   } catch (err) {
     console.error("Startup failed:", err);
