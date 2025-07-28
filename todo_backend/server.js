@@ -59,10 +59,13 @@ async function init() {
 
     // Routes
     app.get("/api/health", async (req, res) => {
+      console.log("[/api/health] entered route handler");
       try {
         await pool.query("SELECT 1");
+        console.log("[/api/health] DB check OK");
         res.status(200).send("healthy");
-      } catch {
+      } catch (err) {
+        console.error("[/api/health] DB check failed", err);
         res.status(500).send("unhealthy");
       }
     });
@@ -96,6 +99,11 @@ async function init() {
       }
     });
 
+    app.use((req, res, next) => {
+      console.log(`[DEBUG] Unmatched request: ${req.method} ${req.originalUrl} → req.path = ${req.path}`);
+      next();
+    });
+
     // 404 fallback
     app.use((req, res) => {
       console.log(`→ 404 Not Found: ${req.method} ${req.originalUrl}`);
@@ -103,7 +111,12 @@ async function init() {
     });
 
     console.log("Registered routes:");
-    app._router.stack.filter((r) => r.route && r.route.path).forEach((r) => console.log(r.route.path));
+    app._router.stack
+      .filter((r) => r.route)
+      .forEach((r) => {
+        const methods = Object.keys(r.route.methods).join(",").toUpperCase();
+        console.log(` → ${methods} ${r.route.path}`);
+      });
 
     app.listen(PORT, () => {
       console.log(`Todo API running on port ${PORT}`);
