@@ -1,0 +1,9 @@
+resources:
+  - rollout.yaml
+  - service.yaml
+  - postgres.yaml
+
+images:
+  - name: ping_pong
+    newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/ping_pong
+    newTag: ar

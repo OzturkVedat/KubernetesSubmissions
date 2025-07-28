@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: pingpong-rollout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ping-pong
+  template:
+    metadata:
+      labels:
+        app: ping-pong
+    spec:
+      containers:
+        - name: ping-pong
+          image: ping_pong
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+          env:
+            - name: PGHOST
+              value: postgres
+            - name: PGPORT
+              value: "5432"
+            - name: PGUSER
+              value: user
+            - name: PGPASSWORD
+              value: password
+            - name: PGDATABASE
+              value: pingpongdb
+    strategy:
+      canary:
+        steps:
+          - setWeight: 50
+          - pause: { duration: 60s }
+          - analysis:
+              templates:
+                - templateName: pingpong-cpu-check
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: pingpong-cpu-check
+  namespace: exercises
+spec:
+  metrics:
+    - name: cpu-usage-check
+      interval: 30s
+      count: 10
+      successCondition: result < 0.5
+      failureLimit: 1
+      provider:
+        prometheus:
+          address: http://kube-prometheus-stack-prometheus.prometheus.svc:9090
+          query: |
+            sum(rate(container_cpu_usage_seconds_total{namespace="exercises"}[5m]))
