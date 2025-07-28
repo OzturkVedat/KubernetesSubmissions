@@ -6,9 +6,16 @@ const morgan = require("morgan");
 const app = express();
 app.use(morgan("dev"));
 
-// app.use(cors());
+app.use(cors());
 
 const PORT = 3000;
+
+["PGHOST", "PGPORT", "PGUSER", "PGPASSWORD", "PGDATABASE"].forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`Missing environment variable: ${key}`);
+    process.exit(1);
+  }
+});
 
 const pool = new Pool({
   host: process.env.PGHOST,
@@ -72,7 +79,7 @@ function startServer() {
     }
   });
 
-  app.get("/api/health*", async (req, res) => {
+  app.get("/api/health", async (req, res) => {
     try {
       await pool.query("SELECT 1");
       res.status(200).send("healthy");

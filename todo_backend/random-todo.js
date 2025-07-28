@@ -42,7 +42,7 @@ async function sendTodo(url, retries = MAX_RETRIES) {
         const req = http.request(
           {
             hostname: "todo-backend-svc.project.svc.cluster.local",
-            port: 1235,
+            port: 80,
             path: "/api/todos",
             method: "POST",
             headers: {
