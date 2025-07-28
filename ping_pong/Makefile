@@ -48,3 +48,6 @@ routes:
 
 images:
 	gcloud container images list --project k8s-course-466712
+
+roll:
+	kubectl get rollout pingpong-rollout -n exercises -o yaml
