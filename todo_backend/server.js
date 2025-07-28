@@ -72,7 +72,7 @@ function startServer() {
     }
   });
 
-  app.get("/api/health", async (req, res) => {
+  app.get("/api/health*", async (req, res) => {
     try {
       await pool.query("SELECT 1");
       res.status(200).send("healthy");
@@ -95,6 +95,11 @@ function startServer() {
       console.error(err);
       res.status(500).json({ error: "Database error" });
     }
+  });
+
+  app.use((req, res, next) => {
+    console.log(`→ Unmatched request: ${req.method} ${req.url}`);
+    res.status(404).send("Not found");
   });
 
   app.listen(PORT, () => {
