@@ -35,7 +35,11 @@
       <button type="submit">Send</button>
     </form>
 
-    <ul id="todoList"></ul>
+    <h3>To-do</h3>
+    <ul id="todoListPending"></ul>
+
+    <h3>Done</h3>
+    <ul id="todoListDone"></ul>
 
     <script>
       const listEl = document.getElementById("todoList");
@@ -43,18 +47,41 @@
 
       const API_BASE = "/api";
 
+      const pendingListEl = document.getElementById("todoListPending");
+      const doneListEl = document.getElementById("todoListDone");
+
       async function loadTodos() {
         try {
           const res = await fetch(`${API_BASE}/todos`);
           const todos = await res.json();
-          listEl.innerHTML = "";
+
+          pendingListEl.innerHTML = "";
+          doneListEl.innerHTML = "";
+
           todos.forEach((todo) => {
             const li = document.createElement("li");
-            li.textContent = todo.text;
-            listEl.appendChild(li);
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.checked = todo.done;
+            checkbox.addEventListener("change", () => updateTodoDone(todo.id, checkbox.checked));
+
+            const span = document.createElement("span");
+            span.textContent = todo.text;
+            if (todo.done) span.style.textDecoration = "line-through";
+
+            li.appendChild(checkbox);
+            li.appendChild(span);
+
+            if (todo.done) {
+              doneListEl.appendChild(li);
+            } else {
+              pendingListEl.appendChild(li);
+            }
           });
         } catch (err) {
-          listEl.innerHTML = "<li>Could not load to-dos</li>";
+          pendingListEl.innerHTML = "<li>Could not load to-dos</li>";
+          doneListEl.innerHTML = "";
         }
       }
 
@@ -73,6 +100,19 @@
           loadTodos();
         } catch (err) {
           listEl.innerHTML = "<li>Could not add the to-do</li>";
+        }
+      }
+
+      async function updateTodoDone(id, done) {
+        try {
+          await fetch(`${API_BASE}/todos/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ done }),
+          });
+          loadTodos();
+        } catch (err) {
+          alert("Failed to update todo");
         }
       }
 

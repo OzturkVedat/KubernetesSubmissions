@@ -61,8 +61,7 @@ cc:
 	@echo "Creating GKE cluster.."
 	gcloud container clusters create course-cluster --zone europe-central2-a --num-nodes 1 && \
 	$(MAKE) context	&& \
-	$(MAKE) gw && \
-	$(MAKE) rollouts
+	$(MAKE) lb
 
 dc:
 	gcloud container clusters delete course-cluster --zone europe-central2-a -q

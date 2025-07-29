@@ -52,7 +52,8 @@ async function init() {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS todos (
         id SERIAL PRIMARY KEY,
-        text VARCHAR(140) NOT NULL
+        text VARCHAR(140) NOT NULL,
+        done BOOLEAN DEFAULT false
       );
     `);
     console.log("Table 'todos' ensured");
@@ -95,6 +96,23 @@ async function init() {
       } catch (err) {
         console.error("Error inserting todo:", err);
         res.status(500).json({ error: "Database error" });
+      }
+    });
+
+    app.put("/api/todos/:id", async (req, res) => {
+      const todoId = req.params.id;
+      const { done } = req.body;
+
+      if (typeof done !== "boolean") return res.status(400).json({ error: " 'done' must be boolean" });
+
+      try {
+        const result = await pool.query("UPDATE todos SET done = $1 WHERE id = $2 RETURNING *", [done, todoId]);
+        if (result.rowCount === 0) return res.status(404).json({ error: "Todo not found" });
+
+        res.status(200).json(result.rows[0]);
+      } catch (err) {
+        console.error("Error updating todo: ", err);
+        res.status(500).json({ error: "Unexpected error" });
       }
     });
 
