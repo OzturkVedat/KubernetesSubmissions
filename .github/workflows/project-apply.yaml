@@ -54,3 +54,8 @@ jobs:
         run: |
           cd the_project/manifests
           kubectl apply -k . --namespace=$NAMESPACE
+
+      - name: Deploy broadcaster
+        run: |
+          cd broadcaster/manifests
+          kubectl apply -f . --namespace=$NAMESPACE

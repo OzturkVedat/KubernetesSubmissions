@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcaster
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: broadcaster
+  template:
+    metadata:
+      labels:
+        app: broadcaster
+    spec:
+      containers:
+        - name: broadcaster
+          image: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/broadcaster:ar
+          env:
+            - name: NATS_URL
+              value: "nats://nats:4222"
+            - name: WEBHOOK_URL
+              value: "https://httpbin.org/post"
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /tmp/ready
+            initialDelaySeconds: 10
+            periodSeconds: 10

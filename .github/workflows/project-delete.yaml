@@ -41,6 +41,11 @@ jobs:
             echo "NAMESPACE=${GITHUB_REF_NAME}" >> $GITHUB_ENV
           fi
 
+      - name: Delete broadcaster
+        run: |
+          cd broadcaster/manifests
+          kubectl delete -f . --namespace=$NAMESPACE || echo "Already deleted"
+
       - name: Delete todo-backend
         run: |
           cd todo_backend/manifests

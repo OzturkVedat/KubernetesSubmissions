@@ -3,6 +3,8 @@ const cors = require("cors");
 const { Pool } = require("pg");
 const morgan = require("morgan");
 
+const { publishTodoEvent } = require("./natsPublisher");
+
 const app = express();
 const PORT = 3000;
 
@@ -91,6 +93,8 @@ async function init() {
 
       try {
         await pool.query("INSERT INTO todos (text) VALUES ($1)", [text]);
+        await publishTodoEvent({ type: "created", text });
+
         console.log(`Added todo: "${text}"`);
         res.status(201).json({ success: true });
       } catch (err) {
@@ -109,6 +113,7 @@ async function init() {
         const result = await pool.query("UPDATE todos SET done = $1 WHERE id = $2 RETURNING *", [done, todoId]);
         if (result.rowCount === 0) return res.status(404).json({ error: "Todo not found" });
 
+        await publishTodoEvent({ type: "updated", id: todoId, done });
         res.status(200).json(result.rows[0]);
       } catch (err) {
         console.error("Error updating todo: ", err);
