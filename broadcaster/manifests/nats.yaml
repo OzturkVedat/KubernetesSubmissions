@@ -31,3 +31,8 @@ spec:
           image: nats:2.10-alpine
           ports:
             - containerPort: 4222
+          readinessProbe:
+            tcpSocket:
+              port: 4222
+            initialDelaySeconds: 10
+            periodSeconds: 10
