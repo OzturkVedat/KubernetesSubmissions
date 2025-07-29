@@ -24,3 +24,7 @@ kubectl create secret generic gcs-key --from-file=key.json=./k8s-course.key.json
 ## Logs Explorer
 
 ![logs ss](docs/todo_logs.png)
+
+## Updated app
+
+![logs ss](docs/todo_v2.png)
