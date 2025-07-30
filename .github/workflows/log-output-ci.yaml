@@ -1,0 +1,33 @@
+name: CI for log-output
+
+on:
+  workflow_dispatch: {}
+
+env:
+  IMAGE_NAME: log_output
+  IMAGE_TAG: ar
+  PROJECT_ID: k8s-course-466712
+  IMAGE_REPO: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/log_output
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Auth to GCloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_SA_KEY }}"
+
+      - name: Docker auth
+        run: |
+          gcloud auth configure-docker europe-central2-docker.pkg.dev
+
+      - name: Build and push image
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./log_output
+          docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_REPO:$IMAGE_TAG
+          docker push $IMAGE_REPO:$IMAGE_TAG
