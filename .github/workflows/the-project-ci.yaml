@@ -2,9 +2,6 @@ name: CI for the-project
 
 on:
   workflow_dispatch: {}
-  push:
-    paths:
-      - the_project/**
 
 env:
   IMAGE_NAME: the_project

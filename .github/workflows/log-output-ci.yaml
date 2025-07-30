@@ -2,9 +2,6 @@ name: CI for log-output
 
 on:
   workflow_dispatch: {}
-  push:
-    paths:
-      - log_output/**
 
 env:
   IMAGE_NAME: log_output
