@@ -55,3 +55,4 @@
 - [4.5.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.5/todo_backend)
 - [4.6.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.6/broadcaster)
 - [4.7.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.7/argocd)
+- [4.8.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.8/argocd)

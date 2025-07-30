@@ -13,3 +13,7 @@ kubectl apply -f app.yaml
 ## ArgoCD log-output-app logs
 
 ![log-output-app ss](docs/log_output_argocd.png)
+
+## ArgoCD the-project-app logs
+
+![the-project-app ss](docs/the_project_argocd.png)

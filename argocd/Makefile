@@ -14,5 +14,12 @@ info-lo:
 events-lo:
 	kubectl describe application log-output -n argocd	
 
+
 apply-tp:
 	kubectl apply -f manifests/the-project-app.yaml
+
+info-tp:
+	kubectl get applications -n argocd the-project -o wide	
+
+events-tp:
+	kubectl describe application the-project -n argocd		
