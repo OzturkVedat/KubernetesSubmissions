@@ -2,8 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - deployment.yaml
-  - route.yaml
+- deployment.yaml
+- route.yaml
 
 images:
-  - name: log_output
+- name: log_output
+  newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/log_output
+  newTag: 36d17edffe412ffa81c0d913f8dce6f8af00bc44
