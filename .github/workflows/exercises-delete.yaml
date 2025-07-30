@@ -45,3 +45,8 @@ jobs:
         run: |
           cd ping_pong/manifests
           kubectl delete -k . --namespace=$NAMESPACE || echo "Already deleted"
+
+      - name: Delete log-output
+        run: |
+          cd log_output/manifests
+          kubectl delete -k . --namespace=$NAMESPACE || echo "Already deleted"

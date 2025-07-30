@@ -49,3 +49,8 @@ jobs:
         run: |
           cd ping_pong/manifests
           kubectl apply -k . --namespace=$NAMESPACE
+
+      - name: Deploy log-output
+        run: |
+          cd log_output/manifests
+          kubectl apply -k . --namespace=$NAMESPACE
