@@ -4,3 +4,9 @@ install:
 
 apply:
 	kubectl apply -f manifests
+
+info:
+	kubectl get applications -n argocd log-output -o wide	
+
+events:
+	kubectl describe application log-output -n argocd	
