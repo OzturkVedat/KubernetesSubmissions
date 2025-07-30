@@ -1,2 +1,2 @@
 apply:
-	kubectl apply -f gateway.yaml
+	kubectl apply -f manifests

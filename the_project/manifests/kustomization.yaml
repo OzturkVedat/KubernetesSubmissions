@@ -7,5 +7,3 @@ resources:
 
 images:
   - name: the_project
-    newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/the_project
-    newTag: ar

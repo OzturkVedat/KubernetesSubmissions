@@ -50,11 +50,6 @@ jobs:
           cd todo_backend/manifests
           kubectl apply -k . --namespace=$NAMESPACE
 
-      - name: Deploy the-project
-        run: |
-          cd the_project/manifests
-          kubectl apply -k . --namespace=$NAMESPACE
-
       - name: Deploy broadcaster
         run: |
           cd broadcaster/manifests

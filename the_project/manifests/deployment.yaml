@@ -19,7 +19,6 @@ spec:
       containers:
         - name: the-project
           image: the_project
-          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           readinessProbe:
