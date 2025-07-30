@@ -19,6 +19,7 @@ pods:
 	kubectl get pods -n project
 	kubectl get pods -n exercises
 	kubectl get pods -n logging
+	kubectl get pods -n argocd
 
 log_output:
 	docker build -t log_output:local ./log_output && \

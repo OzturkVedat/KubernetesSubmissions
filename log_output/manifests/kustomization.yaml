@@ -3,9 +3,7 @@ kind: Kustomization
 
 resources:
   - deployment.yaml
-  - gateway.yaml
+  - route.yaml
 
 images:
   - name: log_output
-    newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/log_output
-    newTag: ar
