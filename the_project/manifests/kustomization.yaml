@@ -8,4 +8,4 @@ resources:
 images:
 - name: the_project
   newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/the_project
-  newTag: e9fbef68aceae133cc74761bc2de7f8db1eebaac
+  newTag: 0eb98f3e56b37650b77d909d8329c04bd775a827
