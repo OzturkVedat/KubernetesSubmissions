@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: the-project
+spec:
+  template:
+    spec:
+      containers:
+        - name: the-project
+          env:
+            - name: ENABLE_BACKUP
+              value: "false"

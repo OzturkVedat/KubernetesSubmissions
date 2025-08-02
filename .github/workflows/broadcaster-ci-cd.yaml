@@ -2,6 +2,11 @@ name: Deploy broadcaster to GKE
 
 on:
   workflow_dispatch: {}
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
 
 env:
   PROJECT_ID: k8s-course-466712
@@ -64,7 +69,19 @@ jobs:
         run: |
           kubectl get namespace $NAMESPACE || kubectl create namespace $NAMESPACE
 
-      - name: Patch image in Kustomize and deploy
+      - name: Determine Env and Deploy with Kustomize
         run: |
-          cd broadcaster/manifests
-          kubectl apply -f . --namespace=$NAMESPACE
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            ENV_DIR="staging"
+            NAMESPACE="staging"
+          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            ENV_DIR="production"
+            NAMESPACE="production"
+          else
+            echo "Unsupported ref for deployment: $GITHUB_REF"
+            exit 1
+          fi
+
+          echo "Deploying to $ENV_DIR namespace..."
+          cd broadcaster/manifests/overlays/$ENV_DIR
+          kubectl apply -k ./
