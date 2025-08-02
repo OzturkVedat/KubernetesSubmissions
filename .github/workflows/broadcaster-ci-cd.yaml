@@ -2,11 +2,6 @@ name: Deploy broadcaster to GKE
 
 on:
   workflow_dispatch: {}
-  push:
-    branches:
-      - main
-    tags:
-      - "*"
 
 env:
   PROJECT_ID: k8s-course-466712
