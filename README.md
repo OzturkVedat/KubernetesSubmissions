@@ -58,3 +58,7 @@
 - [4.8.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.8/argocd)
 - [4.9.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.9/broadcaster)
 - [4.10.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/4.10/the_project)
+
+### Chapter 6
+
+- [5.1.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.1/dummy_controller)
