@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: greeter
-          image: your-image-here
+          image: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/greeter:ar
           env:
             - name: VERSION
               value: "v2"
