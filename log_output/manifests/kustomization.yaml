@@ -8,4 +8,4 @@ resources:
 images:
 - name: log_output
   newName: europe-central2-docker.pkg.dev/k8s-course-466712/course-repo/log_output
-  newTag: 6907254684629f0c7be5bcfae9c92eb3d1abba83
+  newTag: 1b4566702214268b67af8232832f67b2801cf590
