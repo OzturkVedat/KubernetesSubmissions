@@ -4,7 +4,7 @@ metadata:
   name: log-output-route
 spec:
   parentRefs:
-    - name: exerises-gateway
+    - name: exercises-gateway
   rules:
     - matches:
         - path:

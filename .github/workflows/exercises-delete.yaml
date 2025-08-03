@@ -10,7 +10,7 @@ env:
 
 jobs:
   delete:
-    name: Delete Kustomize Manifests
+    name: Delete Manifests
     runs-on: ubuntu-latest
 
     steps:

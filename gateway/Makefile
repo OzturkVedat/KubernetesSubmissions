@@ -1,2 +1,2 @@
 apply:
-	kubectl apply -f manifests
+	kubectl apply -f manifests -n exercises
