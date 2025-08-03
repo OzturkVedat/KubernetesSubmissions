@@ -1,4 +1,4 @@
-# Wikipedia Page Server (K3d + Multi-Container Pod)
+# Wiki-app
 
 This project deploys a multi-container Pod that serves Wikipedia pages using NGINX inside a local k3d cluster.
 
