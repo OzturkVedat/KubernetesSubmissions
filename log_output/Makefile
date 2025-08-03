@@ -43,5 +43,5 @@ gateway:
 
 routes:
 	kubectl get httproute -n exercises
-	kubectl describe httproute log-output-route -n exercises
-	kubectl describe gateway log-output-gateway -n exercises	
+	kubectl describe httproute exercises-route -n exercises
+	kubectl describe gateway exercises-gateway -n exercises	
