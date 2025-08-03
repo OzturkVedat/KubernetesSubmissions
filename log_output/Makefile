@@ -19,7 +19,7 @@ push:
 	docker push $(FULL_IMAGE)
 
 apply:
-	kubectl apply -f manifests
+	kubectl apply -k manifests
 
 delete:
 	kubectl delete -f manifests
