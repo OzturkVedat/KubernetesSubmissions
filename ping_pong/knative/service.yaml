@@ -1,0 +1,31 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ping-pong
+  namespace: exercises
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: "0"
+        autoscaling.knative.dev/target: "1"
+        serving.knative.dev/disableImageDigestResolving: "true"
+    spec:
+      imagePullSecrets: []
+      containers:
+        - name: ping-pong
+          image: ping-pong:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PGHOST
+              value: postgres
+            - name: PGPORT
+              value: "5432"
+            - name: PGUSER
+              value: user
+            - name: PGPASSWORD
+              value: password
+            - name: PGDATABASE
+              value: pingpongdb

@@ -66,3 +66,4 @@
 - [5.3.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.3/greeter)
 - [5.4.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.4/wiki_app)
 - [5.6.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.6/ping_pong)
+- [5.7.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.7/ping_pong)

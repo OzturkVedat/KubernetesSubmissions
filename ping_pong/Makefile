@@ -60,3 +60,7 @@ pods:
 
 app:
 	bash deploy-hello.sh
+
+knat:
+	kubectl get ns exercises || kubectl create ns exercises 
+	kubectl apply -f knative/service.yaml
