@@ -29,25 +29,34 @@ deploy: all
 logs:
 	kubectl logs deployment/ping-pong -n exercises
 
-svc:
-	kubectl get svc -n exercises	
+# SERVERLESS
 
-ingress:
-	kubectl get ingress -n exercises
+cluster:
+	k3d cluster create knative \
+  	--port 8082:30080@agent:0 \
+ 	 -p 8081:80@loadbalancer \
+  	--agents 2 \
+  	--k3s-arg "--disable=traefik@server:0" 
 
-log-ingress:
-	kubectl describe ingress log-output-ingress -n exercises
+crd-apply:
+	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.13.0/serving-crds.yaml
+	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.13.0/serving-core.yaml
+	kubectl apply -f https://github.com/knative/net-kourier/releases/download/knative-v1.13.0/kourier.yaml
 
-gateway:
-	kubectl get gateway -n exercises
+patch-i:
+	kubectl patch configmap/config-network \
+	--namespace knative-serving \
+  	--type merge \
+  	--patch '{"data":{"ingress.class":"kourier.ingress.networking.knative.dev"}}'
 
-routes:
-	kubectl get httproute -n exercises
-	kubectl describe httproute log-output-route -n exercises
-	kubectl describe gateway log-output-gateway -n exercises
+patch-dns:
+	kubectl patch configmap/config-domain \
+  	--namespace knative-serving \
+  	--type merge \
+  	--patch '{"data": {"192.168.240.3.sslip.io": ""}}'
 
-images:
-	gcloud container images list --project k8s-course-466712
+pods:	
+	kubectl get pods -n knative-serving
 
-roll:
-	kubectl get rollout pingpong-rollout -n exercises -o yaml
+app:
+	bash deploy-hello.sh

@@ -27,3 +27,7 @@ kubectl apply -f ping_pong-deployment.yaml
 ## Prometheus UI
 
 ![Prometheus ss](docs/prometheus.png)
+
+# Knative console
+
+![Knative ss](docs/knative.png)
