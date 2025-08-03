@@ -62,3 +62,4 @@
 ### Chapter 6
 
 - [5.1.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.1/dummy_controller)
+- [5.2.](https://github.com/OzturkVedat/KubernetesSubmissions/tree/5.2/sample_app)
