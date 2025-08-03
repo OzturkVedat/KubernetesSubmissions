@@ -42,10 +42,22 @@ const server = http.createServer((req, res) => {
       pongRes.on("end", () => {
         try {
           const json = JSON.parse(data);
-          const output = [`file content: ${fileContent}`, `env variable: MESSAGE=${MESSAGE}`, `${now}: ${id}.`, `Ping / Pongs: ${json.count}`].join("\n");
 
-          res.writeHead(200, { "Content-Type": "text/plain" });
-          res.end(output);
+          http
+            .get("http://greeter-svc", (greeterRes) => {
+              let greeting = "";
+              greeterRes.on("data", (chunk) => (greeting += chunk));
+              greeterRes.on("end", () => {
+                const output = [`file content: ${fileContent}`, `env variable: MESSAGE=${MESSAGE}`, `${now}: ${id}.`, `Ping / Pongs: ${json.count}`, `Greeting: ${greeting}`].join("\n");
+
+                res.writeHead(200, { "Content-Type": "text/plain" });
+                res.end(output);
+              });
+            })
+            .on("error", (err) => {
+              res.writeHead(500);
+              res.end("Failed to reach greeter service.");
+            });
         } catch (err) {
           res.writeHead(500);
           res.end("Invalid response from pingpong app");
