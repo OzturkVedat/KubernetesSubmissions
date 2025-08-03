@@ -49,3 +49,8 @@ jobs:
         run: |
           cd ping_pong/manifests
           kubectl apply -k . --namespace=$NAMESPACE
+
+      - name: Deploy greeter
+        run: |
+          cd greeter/manifests
+          kubectl apply -f . --namespace=$NAMESPACE
