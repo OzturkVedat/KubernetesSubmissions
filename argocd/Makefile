@@ -6,7 +6,7 @@ apply-all:
 	kubectl apply -f manifests
 
 apply-lo:
-	kubectl apply -f manifests/log-output-app.yaml
+	kubectl apply -f manifests/log-output-app.yaml && kubectl apply -f manifests/route.yaml
 
 info-lo:
 	kubectl get applications -n argocd log-output -o wide	
